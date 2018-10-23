@@ -19,6 +19,8 @@ export default class LoginView extends Component {
     };
     this.handle_change = this.handle_change.bind(this);
     this.submit = this.submit.bind(this);
+    this.submit_signup = this.submit_signup.bind(this);
+    this.submit_google = this.submit_google.bind(this);
   }
 
   handle_change(name) {
@@ -38,6 +40,29 @@ export default class LoginView extends Component {
       });
   }
 
+  submit_signup() {
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then(() => {
+      this.set_auth();
+      this.setState({ error_message: '' });
+    })
+    .catch((error) => {
+      this.setState({ error_message: error.message });
+    });
+  }
+
+  submit_google() {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+    .then(() => {
+      this.set_auth();
+      this.setState({ error_message: '' });
+    })
+    .catch((error) => {
+      this.setState({ error_message: error.message });
+    });
+  }
+
   render() {
     return (
       <Card className="login-view">
@@ -45,6 +70,7 @@ export default class LoginView extends Component {
           <Typography component="h4" variant="h4">
                         Login
           </Typography>
+          <Button style={{margin:'10px', marginLeft:0}} variant="contained" color="secondary" onClick={this.submit_google}>Sign in with Google</Button>
           <form className="login-form">
             <TextField id="email-input" label="Email" value={this.state.email} onChange={this.handle_change('email')} />
             <br />
@@ -57,7 +83,8 @@ export default class LoginView extends Component {
               onChange={this.handle_change('password')}
             />
             <br />
-            <Button variant="contained" color="primary" onClick={this.submit} style={{ marginTop: '10px' }}>Submit</Button>
+            <Button style={{margin:'10px', marginLeft:0}} variant="contained" color="primary" onClick={this.submit}>Sign in</Button>
+            <Button style={{margin:'10px'}} variant="contained" color="primary" onClick={this.submit_signup}>Sign up</Button>
             <Typography style={{ color: 'red' }}>{this.state.error_message}</Typography>
           </form>
         </CardContent>
