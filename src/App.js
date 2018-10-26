@@ -3,8 +3,7 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import LoginView from './views/LoginView';
 import user, { auth_change_listener } from './controllers/User';
-
-
+import Map from './components/Map'
 class App extends Component {
   constructor() {
     super();
@@ -26,9 +25,7 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <Button variant="contained" color="primary">
-          Hello World
-        </Button>
+        <Map></Map>
       </div>
     );
   }
